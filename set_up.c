@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 01:44:56 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/10 06:48:44 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/13 23:07:29 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ t_rules	*init_rules(char **argv)
 	rules->death_time = ft_atoi(argv[2]);
 	rules->eat_time = ft_atoi(argv[3]);
 	rules->sleep_time = ft_atoi(argv[4]);
+	if (argv[5] != NULL)
+		rules->ate_num = ft_atoi(argv[5]);
+	printf("rules->ate_num = %d\n", rules->ate_num);
 	rules->m_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (rules->philo_num + 1));
-	rules->all_ate = 0;
-	rules->eat_num = 0;
 	rules->die_flg = 0;
+	rules->ate = 0;
+	rules->all_ate = 0;
 	rules->first_timestamp = 0;
 	return (rules);
 }
@@ -67,6 +70,7 @@ int	init_mutex(t_rules *rules)
 		pthread_mutex_init(&(rules->m_fork[num]), NULL);
 	}
 	pthread_mutex_init(&rules->meal_check, NULL);
+	pthread_mutex_init(&rules->mutex, NULL);
 	return (0);
 }
 
@@ -80,12 +84,16 @@ void	create_philo(t_philos *philo, t_rules *rules)
 	{
 		philo->id = i;
 		philo->is_eat = 0;
+		philo->right_fork_id = i;
+		philo->left_fork_id = (i + 1) % rules->philo_num;
+		philo->ate_count = 0;
 		philo->t_last_meal = 0;
 		philo->limit = 0;
 		philo->info = rules;
+		printf("philo->info->ate_num = %d\n", philo->info->ate_num);
+		printf("philo->info->death_time = %d\n", philo->info->death_time);
+		printf("philo->info->eat_time = %d\n", philo->info->eat_time);
 		pthread_mutex_init(&(philo->mutex), NULL);
-		philo->right_fork_id = i;
-		philo->left_fork_id = (i + 1) % rules->philo_num;
 		i++;
 		philo = philo->left;
 	}
