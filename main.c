@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/11 14:58:23 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/13 23:21:29 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,31 @@ long long	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
+void	*monitor_count(void *void_info)
+{
+	t_rules	*info;
+	int		ate_count;
+	int		philo_num;
+
+	info = (t_rules *)void_info;
+	philo_num = info->philo_num;
+	while (1)
+	{
+		pthread_mutex_lock(&info->meal_check);
+		ate_count = info->ate;
+		printf("ate_count = %d\n", ate_count);
+		if (ate_count && ate_count == info->philo_num)
+		{
+			info->all_ate = 1;
+			pthread_mutex_unlock(&info->meal_check);
+			break ;
+		}
+		pthread_mutex_unlock(&info->meal_check);
+		usleep(1000);
+	}
+	return (NULL);
+}
+
 void	*monitor(void *void_philo)
 {
 	t_philos	*philo;
@@ -28,14 +53,22 @@ void	*monitor(void *void_philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->mutex);
-		if (!philo->is_eat && get_time() >= philo->limit)
+		pthread_mutex_lock(&philo->info->meal_check);
+		philo->limit = philo->t_last_meal + philo->info->death_time;
+		//printf("limit = %lld\nnow = %lld\n", philo->limit, get_time());
+		if (get_time() >= philo->limit)
 		{
+			philo->info->die_flg = 1;
 			put_message(get_time(), philo->id, TYPE_DIED);
-			pthread_mutex_unlock(&philo->mutex);
-			return (NULL);
+			break ;
 		}
+		pthread_mutex_unlock(&philo->info->meal_check);
 		pthread_mutex_unlock(&philo->mutex);
+		usleep(500);
 	}
+	pthread_mutex_unlock(&philo->info->meal_check);
+	pthread_mutex_unlock(&philo->mutex);
+	return (NULL);
 }
 
 void	*philosopher(void *void_philo)
@@ -47,34 +80,48 @@ void	*philosopher(void *void_philo)
 	philo = (t_philos *)void_philo;
 	philo->t_last_meal = get_time();
 	philo->limit = philo->t_last_meal + philo->info->death_time;
-	pthread_create(&tid, NULL, monitor, void_philo);
+	pthread_create(&tid, NULL, monitor, (void *)philo);
+	pthread_detach(tid);
+	//pthread_join(tid, NULL);
 	i = 0;
-	while (i < 10)
-	{
+	while (1)
+	{	
+
 		get_forks(philo);
 		eat(philo);
+		pthread_mutex_lock(&philo->info->meal_check);
+		if (philo->info->all_ate || philo->info->die_flg)
+			break ;
+		pthread_mutex_unlock(&philo->info->meal_check);
 		put_forks(philo);
-		philo_sleep(philo);//philo_sleep();
+		philo_sleep(philo);
 		think(philo);
 		i++;
 	}
-	pthread_join(tid, NULL);
+	pthread_mutex_unlock(&philo->info->meal_check);
+	//pthread_join(tid, NULL);
 	return (NULL);
 }
 
-int	create_threads(t_philos *philo)
+int	create_threads(t_philos *philo, int argc)
 {
 	int	i;
 	int	philo_num;
+	pthread_t	tid;
 
 	philo_num = philo->info->philo_num;
 	i = 0;
-	if (philo)
 	while (i < philo_num)
 	{
 		pthread_create(&(philo->thread_id), NULL, philosopher, philo);
 		philo = philo->left;
 		i++;
+	}
+	if (argc == 6)
+	{
+		printf("--monitor_count---\n");
+		pthread_create(&tid, NULL, monitor_count, philo->info);
+		pthread_detach(tid);
 	}
 	return (0);
 }
@@ -88,7 +135,11 @@ int	wait_end_threads(t_philos *philo)
 	i = 0;
 	while (i < philo_num)
 	{
-		pthread_join(philo->thread_id, NULL);
+		printf("---join-----\n");
+		printf("philo->id = %d\n", philo->id);
+		//pthread_join(philo->thread_id, NULL);
+		pthread_detach(philo->thread_id);
+		printf("---join_end-----\n");
 		philo = philo->left;
 		i++;
 	}
@@ -101,12 +152,14 @@ int main(int argc, char **argv)
 	t_rules		*rules;
 	//int		i;
 
-	if (argc < 0)
+	if (argc < 1)
 		return (-1); //とりあえず、設定。
 	rules = init_rules(argv);
 	philo = create_struct_philo(rules->philo_num);
 	create_philo(philo, rules);
-	create_threads(philo);
+	create_threads(philo, argc);
 	wait_end_threads(philo);
+	clear_philos(philo);
+	clear_rules(rules);
 	return (0);
 }
