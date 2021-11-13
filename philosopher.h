@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 16:39:21 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/10 06:23:11 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/13 23:05:17 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ typedef struct		s_rules
 	int		death_time;
 	int		eat_time;
 	int		sleep_time;
+	int		ate_num;
 	int		die_flg;
-	int		eat_num;
+	int		ate;
 	int		all_ate;
 	long long	first_timestamp;
 	pthread_mutex_t		meal_check;
+	pthread_mutex_t		mutex;
 	pthread_mutex_t		*m_fork;
 }		t_rules;
 
@@ -41,6 +43,7 @@ typedef struct		s_philos
 	int		is_eat;
 	int		left_fork_id;
 	int		right_fork_id;
+	int		ate_count;
 	long long	t_last_meal;
 	long long	limit;
 	t_rules		*info;
@@ -89,5 +92,9 @@ void	put_message(long time, int philo_id, int type);
 /* think_sleep.c */
 void	philo_sleep(t_philos *philo);
 void	think(t_philos *philo);
+
+/* exit.c */
+void	clear_rules(t_rules *rules);
+void	clear_philos(t_philos *philos);
 
 #endif
