@@ -6,6 +6,7 @@ P_SRCS = main.c \
 	ft_atoi.c \
 	set_up.c \
 	eat.c \
+	exit.c \
 	get_fork.c \
 	put_forks.c \
 	put_message.c \
@@ -16,7 +17,7 @@ OBJS = ${SRCS_NAME:.c=.o}
 
 CC = gcc -g -fsanitize=address
 
-# -g -fsanitize=address
+# -g -fsanitize=address -fsanitize=thread
 
 CFLAGS = -Wall -Wextra -Werror
 
