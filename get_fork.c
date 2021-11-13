@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:33:38 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/10 04:08:10 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/13 23:19:52 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	get_left_fork(t_philos *philo)
 	lfork = philo->left_fork_id;
 	pthread_mutex_lock(&philo->info->m_fork[lfork]);
 	put_message(get_time(), philo->id, TYPE_LFORK);
-
 }
 
 void	get_right_fork(t_philos *philo)
