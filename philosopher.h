@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 16:39:21 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/13 23:05:17 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/16 03:50:51 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	init_mutex(t_rules *rules);
 void	create_philo(t_philos *philo, t_rules *rules);
 
 /* eat.c */
-void	eat(t_philos *philo);
+int	eat(t_philos *philo);
 
 /* get_fork */
-void	get_left_fork(t_philos *philo);
-void	get_right_fork(t_philos *philo);
-void	get_forks(t_philos *philo);
+int	get_left_fork(t_philos *philo);
+int	get_right_fork(t_philos *philo);
+int	get_forks(t_philos *philo);
 
 /* put_forks */
 void	put_forks(t_philos *philo);
@@ -90,8 +90,8 @@ char	*get_message(int type);
 void	put_message(long time, int philo_id, int type);
 
 /* think_sleep.c */
-void	philo_sleep(t_philos *philo);
-void	think(t_philos *philo);
+int	philo_sleep(t_philos *philo);
+int	think(t_philos *philo);
 
 /* exit.c */
 void	clear_rules(t_rules *rules);
