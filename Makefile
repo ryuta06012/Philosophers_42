@@ -13,9 +13,9 @@ P_SRCS = main.c \
 	think_and_sleep.c \
 
 
-OBJS = ${SRCS_NAME:.c=.o}
+OBJS = ${P_SRCS:.c=.o}
 
-CC = gcc -g -fsanitize=address
+CC = gcc -g -fsanitize=thread
 
 # -g -fsanitize=address -fsanitize=thread
 

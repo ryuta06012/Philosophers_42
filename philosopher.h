@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 16:39:21 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/16 03:50:51 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/18 00:15:38 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ int	get_right_fork(t_philos *philo);
 int	get_forks(t_philos *philo);
 
 /* put_forks */
-void	put_forks(t_philos *philo);
+int	put_forks(t_philos *philo);
 
 /* put_message */
 char	*get_message(int type);
 void	put_message(long time, int philo_id, int type);
 
 /* think_sleep.c */
+void	adjustment_sleep(long long after_time);
 int	philo_sleep(t_philos *philo);
 int	think(t_philos *philo);
 
