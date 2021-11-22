@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/22 13:10:12 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/23 06:15:45 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,13 @@ int	create_threads(t_philos *philo, int argc)
 	philo_num = philo->info->philo_num;
 	i = 0;
 	argc = 0;
+	if (philo_num == 1)
+	{
+		put_message(get_time(), philo->id, TYPE_LFORK);
+		adjustment_sleep(get_time() + philo->info->death_time);
+		put_message(get_time(), philo->id, TYPE_DIED);
+		return (0);
+	}
 	while (i < philo_num)
 	{
 		if (pthread_create(&(philo->thread_id), NULL, \
@@ -91,6 +98,8 @@ int	wait_end_threads(t_philos *philo)
 
 	philo_num = philo->info->philo_num;
 	i = 0;
+	if (philo_num == 1)
+		return (0);
 	while (i < philo_num)
 	{
 		if (pthread_join(philo->thread_id, NULL) != 0)
@@ -106,11 +115,8 @@ int	main(int argc, char **argv)
 	t_philos	*philo;
 	t_rules		*rules;
 
-	if (argc < 5 || argc > 6)
-	{
-		write(2, "error: bad arguments\n", 21);
+	if (check_argument(argc, argv) == -1)
 		return (-1);
-	}
 	rules = init_rules(argv);
 	philo = create_struct_philo(rules->philo_num);
 	if (rules == NULL || philo == NULL)

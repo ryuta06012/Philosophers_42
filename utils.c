@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 12:30:52 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/22 12:31:40 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/23 04:53:33 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,21 @@ int	check_limit(t_philos *philo)
 		put_message(get_time(), philo->id, TYPE_DIED);
 		return (1);
 	}
+	return (0);
+}
+
+int	check_argument(int argc, char **argv)
+{
+	if (argc < 5 || argc > 6)
+	{
+		write(2, "error: bad arguments\n", 21);
+		return (-1);
+	}
+	if (ft_atoi(argv[1]) < 1 || ft_atoi(argv[2]) < 1 \
+	|| ft_atoi(argv[3]) < 1 || ft_atoi(argv[4]) < 1)
+		return (-1);
+	if (argv[5] != NULL)
+		if (ft_atoi(argv[5]) < 1)
+			return (-1);
 	return (0);
 }
