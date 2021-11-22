@@ -1,4 +1,4 @@
-NAME = philosopher
+NAME = philo
 
 HEADER = philosopher.h
 
@@ -11,11 +11,12 @@ P_SRCS = main.c \
 	put_forks.c \
 	put_message.c \
 	think_and_sleep.c \
+	utils.c \
 
 
 OBJS = ${P_SRCS:.c=.o}
 
-CC = gcc -g -fsanitize=thread
+CC = gcc 
 
 # -g -fsanitize=address -fsanitize=thread
 
