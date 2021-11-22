@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 01:44:56 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/17 03:03:37 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/22 13:10:47 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_rules	*init_rules(char **argv)
 	t_rules		*rules;
 
 	rules = (t_rules *)malloc(sizeof(t_rules));
+	if (rules == NULL)
+		return (NULL);
 	rules->philo_num = ft_atoi(argv[1]);
 	rules->death_time = ft_atoi(argv[2]);
 	rules->eat_time = ft_atoi(argv[3]);
@@ -25,8 +27,10 @@ t_rules	*init_rules(char **argv)
 		rules->ate_num = ft_atoi(argv[5]);
 	else
 		rules->ate_num = -1;
-	//printf("rules->ate_num = %d\n", rules->ate_num);
-	rules->m_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (rules->philo_num + 1));
+	rules->m_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) \
+	* rules->philo_num);
+	if (rules->m_fork == NULL)
+		return (NULL);
 	rules->die_flg = 0;
 	rules->ate = 0;
 	rules->all_ate = 0;
@@ -39,6 +43,8 @@ t_philos	*init_philo(void)
 	t_philos	*philo;
 
 	philo = (t_philos *)malloc(sizeof(t_philos));
+	if (philo == NULL)
+		return (NULL);
 	philo->right = philo;
 	philo->left = philo;
 	return (philo);
@@ -50,10 +56,14 @@ t_philos	*create_struct_philo(int philo_num)
 	t_philos	*new;
 
 	philo = init_philo();
+	if (philo == NULL)
+		return (NULL);
 	philo_num -= 1;
 	while (philo_num--)
 	{
 		new = (t_philos *)malloc(sizeof(t_philos));
+		if (new == NULL)
+			return (NULL);
 		philo->right->left = new;
 		new->right = philo->right;
 		new->left = philo;
@@ -66,11 +76,9 @@ int	init_mutex(t_rules *rules)
 {
 	int	num;
 
-	num =  rules->philo_num;
-	while (--num >= 0)
-	{
-		pthread_mutex_init(&(rules->m_fork[num]), NULL);
-	}
+	num = 0;
+	while (num < rules->philo_num)
+		pthread_mutex_init(&rules->m_fork[num++], NULL);
 	pthread_mutex_init(&rules->meal_check, NULL);
 	pthread_mutex_init(&rules->mutex, NULL);
 	return (0);
@@ -92,9 +100,6 @@ void	create_philo(t_philos *philo, t_rules *rules)
 		philo->t_last_meal = 0;
 		philo->limit = 0;
 		philo->info = rules;
-		/* printf("philo->info->ate_num = %d\n", philo->info->ate_num);
-		printf("philo->info->death_time = %d\n", philo->info->death_time);
-		printf("philo->info->eat_time = %d\n", philo->info->eat_time); */
 		pthread_mutex_init(&(philo->mutex), NULL);
 		i++;
 		philo = philo->left;

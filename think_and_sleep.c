@@ -20,9 +20,7 @@ void	adjustment_sleep(long long after_time)
 	{
 		now = get_time();
 		if (now >= after_time)
-		{
 			break ;
-		}
 	}
 }
 
@@ -34,7 +32,6 @@ int	philo_sleep(t_philos *philo)
 		pthread_mutex_unlock(&philo->info->meal_check);
 		return (-1);
 	}
-	//pthread_mutex_unlock(&philo->info->meal_check);
 	pthread_mutex_unlock(&philo->info->meal_check);
 	put_message(get_time(), philo->id, TYPE_SLEEP);
 	adjustment_sleep(get_time() + philo->info->sleep_time);
@@ -49,7 +46,6 @@ int	think(t_philos *philo)
 		pthread_mutex_unlock(&philo->info->meal_check);
 		return (-1);
 	}
-	//pthread_mutex_unlock(&philo->info->meal_check);
 	put_message(get_time(), philo->id, TYPE_THINK);
 	pthread_mutex_unlock(&philo->info->meal_check);
 	return (0);

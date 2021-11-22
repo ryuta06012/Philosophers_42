@@ -6,14 +6,14 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 09:40:44 by yootaki           #+#    #+#             */
-/*   Updated: 2021/11/07 18:23:26 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/22 13:09:16 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <limits.h>
 
 static int	ft_ovcheck(int sign, long num, long next_num)
 {
