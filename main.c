@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 06:19:56 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/23 10:59:38 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,24 @@ void	*monitor(void *void_philo)
 	philo = (t_philos *)void_philo;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->mutex);
+		//pthread_mutex_lock(&philo->mutex);
 		pthread_mutex_lock(&philo->info->meal_check);
 		if (philo->info->die_flg || philo->info->all_ate)
 			break ;
+		pthread_mutex_unlock(&philo->info->meal_check);
+		pthread_mutex_lock(&philo->info->meal_check);
 		if (check_eat_count(philo))
 			break ;
+		pthread_mutex_unlock(&philo->info->meal_check);
+		pthread_mutex_lock(&philo->info->meal_check);
 		if (check_limit(philo))
 			break ;
 		pthread_mutex_unlock(&philo->info->meal_check);
-		pthread_mutex_unlock(&philo->mutex);
+		//pthread_mutex_unlock(&philo->mutex);
 		usleep(500);
 	}
 	pthread_mutex_unlock(&philo->info->meal_check);
-	pthread_mutex_unlock(&philo->mutex);
+	//pthread_mutex_unlock(&philo->mutex);
 	return ((void *)0);
 }
 
@@ -43,7 +47,7 @@ void	*philosopher(void *void_philo)
 
 	philo = (t_philos *)void_philo;
 	if (philo->id % 2 == 0)
-		usleep(600);
+		usleep(500);
 	philo->t_last_meal = get_time();
 	philo->limit = philo->t_last_meal + philo->info->death_time;
 	if (pthread_create(&tid, NULL, monitor, (void *)void_philo) != 0)

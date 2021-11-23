@@ -16,9 +16,9 @@ P_SRCS = main.c \
 
 OBJS = ${P_SRCS:.c=.o}
 
-CC = gcc 
+CC = gcc -g -fsanitize=thread
 
-# -g -fsanitize=address -fsanitize=thread
+# -g -fsanitize=address -g -fsanitize=thread
 
 CFLAGS = -Wall -Wextra -Werror
 

@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:33:38 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 05:31:33 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/23 07:26:01 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	get_right_fork(t_philos *philo)
 
 int	get_forks(t_philos *philo)
 {
-	pthread_mutex_lock(&philo->info->meal_check);
+	/* pthread_mutex_lock(&philo->info->meal_check);
 	if (ate_dieflg_check(philo, TYPE_GETFORKS) == -1)
 		return (-1);
-	pthread_mutex_unlock(&philo->info->meal_check);
+	pthread_mutex_unlock(&philo->info->meal_check); */
 	if (get_left_fork(philo) == -1)
 		return (-1);
 	if (get_right_fork(philo) == -1)
