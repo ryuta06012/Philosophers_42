@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 10:59:38 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/23 11:40:48 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*monitor(void *void_philo)
 			break ;
 		pthread_mutex_unlock(&philo->info->meal_check);
 		//pthread_mutex_unlock(&philo->mutex);
-		usleep(500);
+		usleep(5000);
 	}
 	pthread_mutex_unlock(&philo->info->meal_check);
 	//pthread_mutex_unlock(&philo->mutex);
@@ -43,15 +43,15 @@ void	*monitor(void *void_philo)
 void	*philosopher(void *void_philo)
 {
 	t_philos	*philo;
-	pthread_t	tid;
+	//pthread_t	tid;
 
 	philo = (t_philos *)void_philo;
 	if (philo->id % 2 == 0)
 		usleep(500);
 	philo->t_last_meal = get_time();
 	philo->limit = philo->t_last_meal + philo->info->death_time;
-	if (pthread_create(&tid, NULL, monitor, (void *)void_philo) != 0)
-		return (NULL);
+	//if (pthread_create(&tid, NULL, monitor, (void *)void_philo) != 0)
+		//return (NULL);
 	while (1)
 	{	
 		if (get_forks(philo) == -1)
@@ -65,7 +65,7 @@ void	*philosopher(void *void_philo)
 		if (think(philo) == -1)
 			break ;
 	}
-	pthread_join(tid, NULL);
+	//pthread_join(tid, NULL);
 	return (NULL);
 }
 

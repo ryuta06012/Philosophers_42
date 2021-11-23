@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:33:38 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 07:26:01 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/23 11:42:58 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,26 @@ int	get_forks(t_philos *philo)
 		pthread_mutex_unlock(&(philo->info->m_fork[philo->left_fork_id]));
 		return (-1);
 	}
+	/* if (philo->id % 2 == 0)
+	{
+		//usleep(100);
+		if (get_right_fork(philo) == -1)
+			return (-1);
+		if (get_left_fork(philo) == -1)
+		{
+			pthread_mutex_unlock(&(philo->info->m_fork[philo->right_fork_id]));
+			return (-1);
+		}
+	}
+	else
+	{
+		if (get_left_fork(philo) == -1)
+			return (-1);
+		if (get_right_fork(philo) == -1)
+		{
+			pthread_mutex_unlock(&(philo->info->m_fork[philo->left_fork_id]));
+			return (-1);
+		}
+	} */
 	return (0);
 }
