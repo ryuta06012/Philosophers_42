@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:33:38 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 11:42:58 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/24 10:55:58 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	get_left_fork(t_philos *philo)
 	int	lfork;
 
 	lfork = philo->left_fork_id;
+	//pthread_mutex_lock(&philo->info->meal_check);
 	pthread_mutex_lock(&philo->info->m_fork[lfork]);
 	pthread_mutex_lock(&philo->info->meal_check);
 	if (ate_dieflg_check(philo, TYPE_LFORK) == -1)
@@ -24,8 +25,9 @@ int	get_left_fork(t_philos *philo)
 		pthread_mutex_unlock(&philo->info->m_fork[lfork]);
 		return (-1);
 	}
-	put_message(get_time(), philo->id, TYPE_LFORK);
+	//put_message(get_time(), philo->id, TYPE_LFORK);
 	pthread_mutex_unlock(&philo->info->meal_check);
+	put_message(get_time(), philo->id, TYPE_LFORK);
 	return (0);
 }
 
@@ -41,27 +43,17 @@ int	get_right_fork(t_philos *philo)
 		pthread_mutex_unlock(&philo->info->m_fork[rfork]);
 		return (-1);
 	}
-	put_message(get_time(), philo->id, TYPE_RFORK);
+	//put_message(get_time(), philo->id, TYPE_RFORK);
 	pthread_mutex_unlock(&philo->info->meal_check);
+	put_message(get_time(), philo->id, TYPE_RFORK);
 	return (0);
 }
 
 int	get_forks(t_philos *philo)
 {
-	/* pthread_mutex_lock(&philo->info->meal_check);
-	if (ate_dieflg_check(philo, TYPE_GETFORKS) == -1)
-		return (-1);
-	pthread_mutex_unlock(&philo->info->meal_check); */
-	if (get_left_fork(philo) == -1)
-		return (-1);
-	if (get_right_fork(philo) == -1)
+	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_unlock(&(philo->info->m_fork[philo->left_fork_id]));
-		return (-1);
-	}
-	/* if (philo->id % 2 == 0)
-	{
-		//usleep(100);
+		usleep(100);
 		if (get_right_fork(philo) == -1)
 			return (-1);
 		if (get_left_fork(philo) == -1)
@@ -79,6 +71,6 @@ int	get_forks(t_philos *philo)
 			pthread_mutex_unlock(&(philo->info->m_fork[philo->left_fork_id]));
 			return (-1);
 		}
-	} */
+	}
 	return (0);
 }

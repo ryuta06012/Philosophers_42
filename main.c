@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 11:40:48 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/24 12:14:04 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,37 +23,43 @@ void	*monitor(void *void_philo)
 		pthread_mutex_lock(&philo->info->meal_check);
 		if (philo->info->die_flg || philo->info->all_ate)
 			break ;
-		pthread_mutex_unlock(&philo->info->meal_check);
-		pthread_mutex_lock(&philo->info->meal_check);
+		//pthread_mutex_unlock(&philo->info->meal_check);
+		//usleep(300);
+		//pthread_mutex_lock(&philo->info->meal_check);
 		if (check_eat_count(philo))
 			break ;
-		pthread_mutex_unlock(&philo->info->meal_check);
-		pthread_mutex_lock(&philo->info->meal_check);
+		//pthread_mutex_unlock(&philo->info->meal_check);
+		//usleep(300);
+		//pthread_mutex_lock(&philo->info->meal_check);
 		if (check_limit(philo))
 			break ;
 		pthread_mutex_unlock(&philo->info->meal_check);
 		//pthread_mutex_unlock(&philo->mutex);
-		usleep(5000);
+		usleep(1000);
 	}
 	pthread_mutex_unlock(&philo->info->meal_check);
 	//pthread_mutex_unlock(&philo->mutex);
-	return ((void *)0);
+	return (NULL);
 }
 
 void	*philosopher(void *void_philo)
 {
 	t_philos	*philo;
-	//pthread_t	tid;
+	pthread_t	tid;
 
 	philo = (t_philos *)void_philo;
 	if (philo->id % 2 == 0)
-		usleep(500);
+		usleep(300);
+	/* if (philo->id % 3 == 0)
+		usleep(300); */
+	/* if (philo->id % 2 == 0)
+		usleep(philo->info->eat_time * 0.9 * 1000); */
 	philo->t_last_meal = get_time();
 	philo->limit = philo->t_last_meal + philo->info->death_time;
-	//if (pthread_create(&tid, NULL, monitor, (void *)void_philo) != 0)
-		//return (NULL);
+	if (pthread_create(&tid, NULL, monitor, (void *)void_philo) != 0)
+		return (NULL);
 	while (1)
-	{	
+	{
 		if (get_forks(philo) == -1)
 			break ;
 		if (eat(philo) == -1)
@@ -65,7 +71,7 @@ void	*philosopher(void *void_philo)
 		if (think(philo) == -1)
 			break ;
 	}
-	//pthread_join(tid, NULL);
+	pthread_join(tid, NULL);
 	return (NULL);
 }
 
@@ -89,6 +95,7 @@ int	create_threads(t_philos *philo, int argc)
 		if (pthread_create(&(philo->thread_id), NULL, \
 		philosopher, (void *)philo) != 0)
 			return (-1);
+		//usleep(500);
 		philo = philo->left;
 		i++;
 	}
