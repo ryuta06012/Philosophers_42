@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/24 12:14:04 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/24 14:18:01 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	main(int argc, char **argv)
 	create_philo(philo, rules);
 	if (create_threads(philo, argc) == -1)
 		return (clear_philos_rules(philo, rules, -1));
-	wait_end_threads(philo);
+	//wait_end_threads(philo);
 	if (wait_end_threads(philo) == -1)
 		return (clear_philos_rules(philo, rules, -1));
 	clear_philos_rules(philo, rules, 0);

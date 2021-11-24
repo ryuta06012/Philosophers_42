@@ -16,7 +16,7 @@ P_SRCS = main.c \
 
 OBJS = ${P_SRCS:.c=.o}
 
-CC = gcc -g -fsanitize=thread
+CC = gcc
 
 # -g -fsanitize=address -g -fsanitize=thread
 

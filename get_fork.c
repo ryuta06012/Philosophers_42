@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:33:38 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/24 10:55:58 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/24 14:15:27 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	get_left_fork(t_philos *philo)
 		pthread_mutex_unlock(&philo->info->m_fork[lfork]);
 		return (-1);
 	}
-	//put_message(get_time(), philo->id, TYPE_LFORK);
-	pthread_mutex_unlock(&philo->info->meal_check);
 	put_message(get_time(), philo->id, TYPE_LFORK);
+	pthread_mutex_unlock(&philo->info->meal_check);
+	//put_message(get_time(), philo->id, TYPE_LFORK);
 	return (0);
 }
 
@@ -43,9 +43,9 @@ int	get_right_fork(t_philos *philo)
 		pthread_mutex_unlock(&philo->info->m_fork[rfork]);
 		return (-1);
 	}
-	//put_message(get_time(), philo->id, TYPE_RFORK);
-	pthread_mutex_unlock(&philo->info->meal_check);
 	put_message(get_time(), philo->id, TYPE_RFORK);
+	pthread_mutex_unlock(&philo->info->meal_check);
+	//put_message(get_time(), philo->id, TYPE_RFORK);
 	return (0);
 }
 
@@ -53,7 +53,7 @@ int	get_forks(t_philos *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		usleep(100);
+	//	usleep(100);
 		if (get_right_fork(philo) == -1)
 			return (-1);
 		if (get_left_fork(philo) == -1)
