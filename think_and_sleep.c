@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 06:01:46 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/24 12:21:25 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/24 16:43:39 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	adjustment_sleep(long long end)
 		now = get_time();
 		if (now >= end)
 			break ;
-		//usleep((end - now) / 2);
-		usleep(1000);
+		usleep((end - now) / 2);
+		//usleep(1000);
 	}
 }
 

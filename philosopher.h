@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 16:39:21 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/23 04:50:38 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/25 09:08:17 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,15 @@ int	clear_philos_rules(t_philos *philo, t_rules *rules, int status);
 int	check_eat_count(t_philos *philo);
 int	check_limit(t_philos *philo);
 int	check_argument(int argc, char **argv);
+
+# define RESET "\033[0m"
+# define BLACK "\033[30m"
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN "\033[36m"
+# define WHITE "\033[37m"
 
 #endif
