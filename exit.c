@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 06:50:09 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/22 12:06:42 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/25 11:40:54 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	clear_rules(t_rules *rules)
 	free(rules);
 }
 
-void	clear_philos(t_philos *philos)
+void	clear_philos(t_plst *philos)
 {
-	t_philos		*tmp;
+	t_plst		*tmp;
 	int				i;
 	int				philo_num;
 

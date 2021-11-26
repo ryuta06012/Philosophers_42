@@ -6,50 +6,48 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:33:38 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/24 14:15:27 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/25 11:40:53 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-int	get_left_fork(t_philos *philo)
+int	get_left_fork(t_plst *philo)
 {
 	int	lfork;
 
 	lfork = philo->left_fork_id;
-	//pthread_mutex_lock(&philo->info->meal_check);
 	pthread_mutex_lock(&philo->info->m_fork[lfork]);
 	pthread_mutex_lock(&philo->info->meal_check);
-	if (ate_dieflg_check(philo, TYPE_LFORK) == -1)
+	if (ate_dieflg_check(philo, FORK) == -1)
 	{
 		pthread_mutex_unlock(&philo->info->m_fork[lfork]);
 		return (-1);
 	}
-	put_message(get_time(), philo->id, TYPE_LFORK);
+	put_message(get_time(), philo->id, GET_FORK);
 	pthread_mutex_unlock(&philo->info->meal_check);
-	//put_message(get_time(), philo->id, TYPE_LFORK);
 	return (0);
 }
 
-int	get_right_fork(t_philos *philo)
+int	get_right_fork(t_plst *philo)
 {
 	int	rfork;
 
 	rfork = philo->right_fork_id;
 	pthread_mutex_lock(&philo->info->m_fork[rfork]);
 	pthread_mutex_lock(&philo->info->meal_check);
-	if (ate_dieflg_check(philo, TYPE_RFORK) == -1)
+	if (ate_dieflg_check(philo, FORK) == -1)
 	{
 		pthread_mutex_unlock(&philo->info->m_fork[rfork]);
 		return (-1);
 	}
-	put_message(get_time(), philo->id, TYPE_RFORK);
+	put_message(get_time(), philo->id, GET_FORK);
 	pthread_mutex_unlock(&philo->info->meal_check);
 	//put_message(get_time(), philo->id, TYPE_RFORK);
 	return (0);
 }
 
-int	get_forks(t_philos *philo)
+int	get_forks(t_plst *philo)
 {
 	if (philo->id % 2 == 0)
 	{

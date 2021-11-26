@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 06:01:46 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/24 16:43:39 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/25 11:40:56 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,28 @@ void	adjustment_sleep(long long end)
 		now = get_time();
 		if (now >= end)
 			break ;
-		usleep((end - now) / 2);
-		//usleep(1000);
+		//usleep((end - now) / 2);
+		usleep(1000);
 	}
 }
 
-int	philo_sleep(t_philos *philo)
+int	philo_sleep(t_plst *philo)
 {
-	//put_message(get_time(), philo->id, TYPE_SLEEP);
 	pthread_mutex_lock(&philo->info->meal_check);
-	if (philo->info->all_ate == 1 || philo->info->die_flg == 1)
-	{
-		pthread_mutex_unlock(&philo->info->meal_check);
+	if (ate_dieflg_check(philo, SLEEP) == -1)
 		return (-1);
-	}
 	put_message(get_time(), philo->id, TYPE_SLEEP);
 	pthread_mutex_unlock(&philo->info->meal_check);
-	//put_message(get_time(), philo->id, TYPE_SLEEP);
 	adjustment_sleep(get_time() + philo->info->sleep_time);
 	return (0);
 }
 
-int	think(t_philos *philo)
+int	think(t_plst *philo)
 {
 	pthread_mutex_lock(&philo->info->meal_check);
-	if (philo->info->all_ate == 1 || philo->info->die_flg == 1)
-	{
-		pthread_mutex_unlock(&philo->info->meal_check);
+	if (ate_dieflg_check(philo, THINK) == -1)
 		return (-1);
-	}
-	//put_message(get_time(), philo->id, TYPE_THINK);
+	put_message(get_time(), philo->id, TYPE_THINK);
 	pthread_mutex_unlock(&philo->info->meal_check);
 	//put_message(get_time(), philo->id, TYPE_THINK);
 	return (0);

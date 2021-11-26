@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:24:51 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/24 14:18:01 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/25 13:02:34 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,33 @@
 
 void	*monitor(void *void_philo)
 {
-	t_philos	*philo;
+	t_plst	*philo;
 
-	philo = (t_philos *)void_philo;
+	philo = (t_plst *)void_philo;
 	while (1)
 	{
-		//pthread_mutex_lock(&philo->mutex);
 		pthread_mutex_lock(&philo->info->meal_check);
 		if (philo->info->die_flg || philo->info->all_ate)
 			break ;
-		//pthread_mutex_unlock(&philo->info->meal_check);
-		//usleep(300);
-		//pthread_mutex_lock(&philo->info->meal_check);
-		if (check_eat_count(philo))
+		if (check_all_ate(philo))
 			break ;
-		//pthread_mutex_unlock(&philo->info->meal_check);
-		//usleep(300);
-		//pthread_mutex_lock(&philo->info->meal_check);
 		if (check_limit(philo))
 			break ;
 		pthread_mutex_unlock(&philo->info->meal_check);
-		//pthread_mutex_unlock(&philo->mutex);
 		usleep(1000);
 	}
 	pthread_mutex_unlock(&philo->info->meal_check);
-	//pthread_mutex_unlock(&philo->mutex);
 	return (NULL);
 }
 
 void	*philosopher(void *void_philo)
 {
-	t_philos	*philo;
+	t_plst	*philo;
 	pthread_t	tid;
 
-	philo = (t_philos *)void_philo;
+	philo = (t_plst *)void_philo;
 	if (philo->id % 2 == 0)
-		usleep(300);
-	/* if (philo->id % 3 == 0)
-		usleep(300); */
-	/* if (philo->id % 2 == 0)
-		usleep(philo->info->eat_time * 0.9 * 1000); */
+		usleep(500);
 	philo->t_last_meal = get_time();
 	philo->limit = philo->t_last_meal + philo->info->death_time;
 	if (pthread_create(&tid, NULL, monitor, (void *)void_philo) != 0)
@@ -75,7 +62,7 @@ void	*philosopher(void *void_philo)
 	return (NULL);
 }
 
-int	create_threads(t_philos *philo, int argc)
+int	create_threads(t_plst *philo, int argc)
 {
 	int	i;
 	int	philo_num;
@@ -85,7 +72,7 @@ int	create_threads(t_philos *philo, int argc)
 	argc = 0;
 	if (philo_num == 1)
 	{
-		put_message(get_time(), philo->id, TYPE_LFORK);
+		put_message(get_time(), philo->id, GET_FORK);
 		adjustment_sleep(get_time() + philo->info->death_time);
 		put_message(get_time(), philo->id, TYPE_DIED);
 		return (0);
@@ -95,14 +82,13 @@ int	create_threads(t_philos *philo, int argc)
 		if (pthread_create(&(philo->thread_id), NULL, \
 		philosopher, (void *)philo) != 0)
 			return (-1);
-		//usleep(500);
 		philo = philo->left;
 		i++;
 	}
 	return (0);
 }
 
-int	wait_end_threads(t_philos *philo)
+int	wait_end_threads(t_plst *philo)
 {
 	int	i;
 	int	philo_num;
@@ -123,10 +109,10 @@ int	wait_end_threads(t_philos *philo)
 
 int	main(int argc, char **argv)
 {
-	t_philos	*philo;
+	t_plst	*philo;
 	t_rules		*rules;
 
-	if (check_argument(argc, argv) == -1)
+	if (check_argument(argc, argv) == false)
 		return (-1);
 	rules = init_rules(argv);
 	philo = create_struct_philo(rules->philo_num);
@@ -135,7 +121,6 @@ int	main(int argc, char **argv)
 	create_philo(philo, rules);
 	if (create_threads(philo, argc) == -1)
 		return (clear_philos_rules(philo, rules, -1));
-	//wait_end_threads(philo);
 	if (wait_end_threads(philo) == -1)
 		return (clear_philos_rules(philo, rules, -1));
 	clear_philos_rules(philo, rules, 0);

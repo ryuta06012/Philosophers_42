@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 01:44:56 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/11/22 13:10:47 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/11/25 11:40:57 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ t_rules	*init_rules(char **argv)
 	return (rules);
 }
 
-t_philos	*init_philo(void)
+t_plst	*init_philo(void)
 {
-	t_philos	*philo;
+	t_plst	*philo;
 
-	philo = (t_philos *)malloc(sizeof(t_philos));
+	philo = (t_plst *)malloc(sizeof(t_plst));
 	if (philo == NULL)
 		return (NULL);
 	philo->right = philo;
@@ -50,10 +50,10 @@ t_philos	*init_philo(void)
 	return (philo);
 }
 
-t_philos	*create_struct_philo(int philo_num)
+t_plst	*create_struct_philo(int philo_num)
 {
-	t_philos	*philo;
-	t_philos	*new;
+	t_plst	*philo;
+	t_plst	*new;
 
 	philo = init_philo();
 	if (philo == NULL)
@@ -61,7 +61,7 @@ t_philos	*create_struct_philo(int philo_num)
 	philo_num -= 1;
 	while (philo_num--)
 	{
-		new = (t_philos *)malloc(sizeof(t_philos));
+		new = (t_plst *)malloc(sizeof(t_plst));
 		if (new == NULL)
 			return (NULL);
 		philo->right->left = new;
@@ -84,7 +84,7 @@ int	init_mutex(t_rules *rules)
 	return (0);
 }
 
-void	create_philo(t_philos *philo, t_rules *rules)
+void	create_philo(t_plst *philo, t_rules *rules)
 {
 	int	i;
 
