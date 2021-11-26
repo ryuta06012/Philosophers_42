@@ -35,8 +35,8 @@ void	*monitor(void *void_philo)
 
 void	*philosopher(void *void_philo)
 {
-	t_plst	*philo;
 	pthread_t	tid;
+	t_plst		*philo;
 
 	philo = (t_plst *)void_philo;
 	if (philo->id % 2 == 0)
@@ -109,7 +109,7 @@ int	wait_end_threads(t_plst *philo)
 
 int	main(int argc, char **argv)
 {
-	t_plst	*philo;
+	t_plst		*philo;
 	t_rules		*rules;
 
 	if (check_argument(argc, argv) == false)

@@ -14,7 +14,5 @@
 
 void	put_message(long time, int philo_id, char *type)
 {
-	//long long start = get_time();
 	printf("%ld %d %s\n", time, philo_id, type);
-	//printf("%send = %lld%s\n", RED, get_time() - start, RESET);
 }

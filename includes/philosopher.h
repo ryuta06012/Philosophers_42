@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef PHILOSOPHER_H
+#ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
 # include <stdio.h>
@@ -29,34 +29,34 @@
 
 typedef struct s_rules
 {
-	long long	first_timestamp;
+	long long			first_timestamp;
 	pthread_mutex_t		*m_fork;
 	pthread_mutex_t		meal_check;
-	pthread_mutex_t	mutex;
-	int			philo_num;
-	int			death_time;
-	int			eat_time;
-	int			sleep_time;
-	int			ate_num;
-	int			die_flg;
-	int			ate;
-	int			all_ate;
+	pthread_mutex_t		mutex;
+	int					philo_num;
+	int					death_time;
+	int					eat_time;
+	int					sleep_time;
+	int					ate_num;
+	int					die_flg;
+	int					ate;
+	int					all_ate;
 }		t_rules;
 
 typedef struct s_plst
 {
-	int		id;
-	int		is_eat;
-	int		left_fork_id;
-	int		right_fork_id;
-	int		ate_count;
-	long long	t_last_meal;
-	long long	limit;
-	t_rules		*info;
+	int					id;
+	int					is_eat;
+	int					left_fork_id;
+	int					right_fork_id;
+	int					ate_count;
+	long long			t_last_meal;
+	long long			limit;
+	t_rules				*info;
 	pthread_mutex_t		mutex;
 	struct s_plst		*left;
 	struct s_plst		*right;
-	pthread_t	thread_id;
+	pthread_t			thread_id;
 }			t_plst;
 
 enum {
@@ -66,50 +66,50 @@ enum {
 	SLEEP
 };
 
-int	ft_atoi(const char *str);
+int			ft_atoi(const char *str);
 
 /* set_up.c */
-t_rules	*init_rules(char **argv);
-t_plst	*init_philo(void);
-t_plst	*create_struct_philo(int philo_num);
-int		init_mutex(t_rules *rules);
-void	create_philo(t_plst *philo, t_rules *rules);
+t_rules		*init_rules(char **argv);
+t_plst		*init_philo(void);
+t_plst		*create_struct_philo(int philo_num);
+int			init_mutex(t_rules *rules);
+void		create_philo(t_plst *philo, t_rules *rules);
 
 /* eat.c */
-int	ate_dieflg_check(t_plst *philo, int type);
-int	eat(t_plst *philo);
+int			ate_dieflg_check(t_plst *philo, int type);
+int			eat(t_plst *philo);
 
 /* get_fork */
-int	get_left_fork(t_plst *philo);
-int	get_right_fork(t_plst *philo);
-int	get_forks(t_plst *philo);
+int			get_left_fork(t_plst *philo);
+int			get_right_fork(t_plst *philo);
+int			get_forks(t_plst *philo);
 
 /* put_forks */
-int	put_forks(t_plst *philo);
+int			put_forks(t_plst *philo);
 
 /* put_message */
-char	*get_message(int type);
-void	put_message(long time, int philo_id, char *type);
+char		*get_message(int type);
+void		put_message(long time, int philo_id, char *type);
 
 /* think_sleep.c */
-void	adjustment_sleep(long long after_time);
-int		philo_sleep(t_plst *philo);
-int		think(t_plst *philo);
+void		adjustment_sleep(long long after_time);
+int			philo_sleep(t_plst *philo);
+int			think(t_plst *philo);
 
 /* exit.c */
-void	clear_rules(t_rules *rules);
-void			clear_philos(t_plst *philos);
+void		clear_rules(t_rules *rules);
+void		clear_philos(t_plst *philos);
 
 /* utils.c */
 long long	get_time(void);
-int	clear_philos_rules(t_plst *philo, t_rules *rules, int status);
-int	check_all_ate(t_plst *philo);
-int	check_limit(t_plst *philo);
+int			clear_philos_rules(t_plst *philo, t_rules *rules, int status);
+int			check_all_ate(t_plst *philo);
+int			check_limit(t_plst *philo);
 
 /* validate.c */
-bool	check_argument(int argc, char **argv);
-bool	check_digit(int argc, char **argv);
-bool	ph_isdigit(char *arg);
+bool		check_argument(int argc, char **argv);
+bool		check_digit(int argc, char **argv);
+bool		ph_isdigit(char *arg);
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"

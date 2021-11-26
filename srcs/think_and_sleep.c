@@ -21,7 +21,6 @@ void	adjustment_sleep(long long end)
 		now = get_time();
 		if (now >= end)
 			break ;
-		//usleep((end - now) / 2);
 		usleep(1000);
 	}
 }
@@ -44,6 +43,5 @@ int	think(t_plst *philo)
 		return (-1);
 	put_message(get_time(), philo->id, TYPE_THINK);
 	pthread_mutex_unlock(&philo->info->meal_check);
-	//put_message(get_time(), philo->id, TYPE_THINK);
 	return (0);
 }

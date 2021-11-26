@@ -17,7 +17,6 @@ bool	ph_isdigit(char *arg)
 	int	i;
 
 	i = 0;
-	//printf("aaaa\n");
 	while (arg[i] != '\0')
 	{
 		if ((arg[i] >= '0') && (arg[i] <= '9'))
@@ -33,7 +32,7 @@ bool	check_digit(int argc, char **argv)
 	int	i;
 
 	i = 1;
-	while(i < argc)
+	while (i < argc)
 	{
 		if (ph_isdigit(argv[i]) == false)
 			return (false);

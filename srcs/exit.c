@@ -31,8 +31,8 @@ void	clear_rules(t_rules *rules)
 void	clear_philos(t_plst *philos)
 {
 	t_plst		*tmp;
-	int				i;
-	int				philo_num;
+	int			i;
+	int			philo_num;
 
 	i = 0;
 	philo_num = philos->info->philo_num;

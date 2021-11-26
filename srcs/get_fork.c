@@ -43,7 +43,6 @@ int	get_right_fork(t_plst *philo)
 	}
 	put_message(get_time(), philo->id, GET_FORK);
 	pthread_mutex_unlock(&philo->info->meal_check);
-	//put_message(get_time(), philo->id, TYPE_RFORK);
 	return (0);
 }
 
@@ -51,7 +50,6 @@ int	get_forks(t_plst *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-	//	usleep(100);
 		if (get_right_fork(philo) == -1)
 			return (-1);
 		if (get_left_fork(philo) == -1)
