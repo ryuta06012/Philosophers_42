@@ -6,7 +6,7 @@
 /*   By: hryuuta <hryuuta@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 06:45:16 by hryuuta           #+#    #+#             */
-/*   Updated: 2021/12/06 07:53:52 by hryuuta          ###   ########.fr       */
+/*   Updated: 2021/12/11 01:21:10 by hryuuta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	*monitor(void *void_philo)
 		pthread_mutex_unlock(&philo->info->meal_check);
 		usleep(1000);
 	}
+	put_forks(philo);
 	pthread_mutex_unlock(&philo->info->meal_check);
 	return (NULL);
 }
