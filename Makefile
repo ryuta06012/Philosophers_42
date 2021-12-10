@@ -1,8 +1,9 @@
-NAME = philo
-
-HEADER = philosopher.h
-
-P_SRCS = main.c \
+NAME := philo
+CC := gcc
+CFLAGS := -Wall -Wextra -Werror -MMD -MP -pthread 
+HEADER := -I./includes
+P_SRCSDIR := ./srcs
+P_SRCS := main.c\
 	ft_atoi.c \
 	set_up.c \
 	eat.c \
@@ -12,31 +13,34 @@ P_SRCS = main.c \
 	put_message.c \
 	think_and_sleep.c \
 	utils.c \
+	validate.c \
+	routine.c
 
+OBJS_DIR := ./obj
+#OBJS = ${addprefix ${OBJS_DIR), ${P_SRCS:.c=.o}}
+OBJS := $(addprefix $(OBJS_DIR)/, $(notdir $(P_SRCS:.c=.o)))
+DEPS := $(OBJS:.o=.d)
+# -g -fsanitize=address -g -fsanitize=thread
+RM := rm -rf
 
-OBJS = ${P_SRCS:.c=.o}
+$(NAME): $(OBJS)
+	$(CC) -o $@ $^
 
-CC = gcc 
+$(OBJS_DIR)/%.o: $(P_SRCSDIR)/%.c
+	mkdir -p $(OBJS_DIR)
+	$(CC) $(CFLAGS) $(HEADER) -o $@ -c $<
 
-# -g -fsanitize=address -fsanitize=thread
-
-CFLAGS = -Wall -Wextra -Werror
-
-PFLAGS = -pthread
-
-RM = rm -rf
-
-all: ${NAME}
-
-${NAME}: ${OBJS} ${HEADER}
-	${CC} ${CFLAGS} ${PFLAGS} -o ${NAME} ${P_SRCS} -I ${HEADER}
+all: $(NAME)
 
 clean:
-	${RM} ${OBJS}
+	rm -f $(NAME) $(OBJS) $(DEPS)
 
 fclean: clean
-	${RM} ${NAME}
+	$(RM) $(NAME)
+	$(RM) -r $(OBJS_DIR)
 
 re: fclean all
 
 .PHONY: all clean fclean re
+
+-include $(DEPS)
